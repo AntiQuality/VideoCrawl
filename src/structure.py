@@ -8,7 +8,7 @@
 # www.thepaper.cn 澎湃网，视频在https://www.thepaper.cn/channel_26916
 # haokan.baidu.com 好看视频
 # www.ku6.com 酷6网
-# tv.cntv.cn 央视网
+# tv.cntv.cn 央视网，视频在https://v.cctv.com
 # www.bilibili.com 哔哩哔哩
 
 # 分数评价标准
@@ -37,6 +37,44 @@ WEBSITE_NAME        = ""
 VIDEO_URL_PREFIX    = ""
 SEARCH_URL_PREFIX   = ""
 
+# 根据视频id得到视频url
+def get_url(id):
+    return VIDEO_URL_PREFIX.format(id)
+
+# 获取视频文件
+def download_video_by_url(url, filename=None):
+    # 输入：视频 URL string；视频文件名 string（可选）
+    # 输出：视频文件存储路径 string
+
+    if filename is None:
+        filename = url.split('/')[-1]
+
+    # 如果WEBSITE_NAME目录不存在那么创建WEBSITE_NAME目录
+    if not os.path.exists("data/" + WEBSITE_NAME):
+        os.makedirs("data/" + WEBSITE_NAME)
+    file_path = "data/" + WEBSITE_NAME + "/" + filename
+    return file_path
+
+# 分段下载视频
+def download_video_by_segment(url, filename=None):
+    # 输入：视频 URL string；视频文件名 string（可选）
+    # 输出：视频文件存储路径 string
+    
+    if filename is None:
+        filename = url.split('/')[-1]
+
+    # 如果WEBSITE_NAME目录不存在那么创建WEBSITE_NAME目录
+    if not os.path.exists("data/" + WEBSITE_NAME):
+        os.makedirs("data/" + WEBSITE_NAME)
+    file_path = "data/" + WEBSITE_NAME + "/" + filename
+    return file_path
+
+# 根据当前视频网站决定下载方式
+def download_video(id):
+    # 输入：视频 URL string
+    # 输出：视频文件文件存储路径 string
+    pass
+
 # 获取视频标题
 def get_video_title(id):
     # 输入：视频 ID string
@@ -59,18 +97,6 @@ def get_video_play(id):
 def get_video_channel(id):
     # 输入：视频 ID string
     # 输出：视频频道 string
-    pass
-
-# 获取视频文件
-def download_video_by_url(url):
-    # 输入：视频 URL string
-    # 输出：视频文件文件存储路径 string
-    pass
-
-# 分段下载视频
-def download_video(url):
-    # 输入：视频 URL string
-    # 输出：视频文件文件存储路径 string
     pass
 
 # 搜索视频
