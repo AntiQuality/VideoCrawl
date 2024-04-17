@@ -36,6 +36,8 @@ import time
 WEBSITE_NAME        = ""
 VIDEO_URL_PREFIX    = ""
 SEARCH_URL_PREFIX   = ""
+SEARCH_API_URL      = ""
+SEARCH_NUM          = 10
 
 # 根据视频id得到视频url
 def get_url(id):
@@ -53,6 +55,12 @@ def download_video_by_url(url, filename=None):
     if not os.path.exists("data/" + WEBSITE_NAME):
         os.makedirs("data/" + WEBSITE_NAME)
     file_path = "data/" + WEBSITE_NAME + "/" + filename
+    with open(file_path, mode='wb') as f:
+        print(f'\t正在保存{WEBSITE_NAME}视频：{filename}')
+        video_content = requests.get(url=url).content
+        f.write(video_content)
+        print(f'\t成功保存{WEBSITE_NAME}视频：{filename}')
+
     return file_path
 
 # 分段下载视频
@@ -69,35 +77,51 @@ def download_video_by_segment(url, filename=None):
     file_path = "data/" + WEBSITE_NAME + "/" + filename
     return file_path
 
-# 根据当前视频网站决定下载方式
-def download_video(id):
-    # 输入：视频 URL string
-    # 输出：视频文件文件存储路径 string
-    pass
-
 # 获取视频标题
 def get_video_title(id):
     # 输入：视频 ID string
     # 输出：视频标题 string
-    pass
+    url = get_url(id)
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    title_div = soup.find('', class_='')        # 取决于网站结构
+    if title_div:
+        title = title_div.h1.text               # 也可能没有h1
+        return title
+    else:
+        return "未找到标题"
 
 # 获取视频简介
 def get_video_intro(id):
     # 输入：视频 ID string
     # 输出：视频简介 string
-    pass
+    return f"{WEBSITE_NAME} 没有简介"
 
 # 获取视频播放量
 def get_video_play(id):
     # 输入：视频 ID string
-    # 输出：视频播放量和点赞量 string list
+    # 输出：视频播放量和点赞量 string
     pass
 
 # 获取视频频道
 def get_video_channel(id):
     # 输入：视频 ID string
     # 输出：视频频道 string
+    return f"{WEBSITE_NAME} 没有频道"
+
+# 根据当前视频网站决定下载方式
+def download_video(id):
+    # 输入：视频 URL string
+    # 输出：视频文件文件存储路径 string
     pass
+
+# 收集视频基本信息
+def get_video_info(id):
+    print(f"视频标题是：{get_video_title(id)}")
+    print(get_video_intro(id))
+    print(get_video_play(id))
+    print(get_video_channel(id))
+    print(f"视频存储路径：{download_video(id)}")
 
 # 搜索视频
 def search_video(keyword):
@@ -105,65 +129,8 @@ def search_video(keyword):
     # 输出：视频URL列表 list
     pass
 
-# Python代码
-
-# -*- coding: utf-8 -*-
-import requests
-import re
-from bs4 import BeautifulSoup
-import json
-import os
-import time
-
-class Crawler:
-    def __init__(self):
-        self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
-        self.video_list = []
-
-    def get_video_info(self, url):
-        response = requests.get(url, headers=self.headers)
-        response.encoding = 'utf-8'
-        soup = BeautifulSoup(response.text, 'html.parser')
-        title = soup.find('title').get_text()
-        description = soup.find('meta', {'name': 'description'})['content']
-        play_count = soup.find('span', {'class': 'play-count'}).get_text()
-        channel = soup.find('a', {'class': 'channel'}).get_text()
-        video_url = re.search(r'videoUrl: "(.*?)"', response.text).group(1)
-        video_info = {
-            'title': title,
-            'description': description,
-            'play_count': play_count,
-            'channel': channel,
-            'video_url': video_url
-        }
-        self.video_list.append(video_info)
-
-    def get_video_list(self, keyword):
-        url = 'https://v.ifeng.com/search/?q=' + keyword
-        response = requests.get(url, headers=self.headers)
-        response.encoding = 'utf-8'
-        soup = BeautifulSoup(response.text, 'html.parser')
-        video_list = soup.find_all('div', {'class': 'search-list'})
-        for video in video_list:
-            video_url = video.find('a')['href']
-            self.get_video_info(video_url)
-
-    def save_video_info(self):
-        with open('video_info.json', 'w', encoding='utf-8') as f:
-            json.dump(self.video_list, f, ensure_ascii=False)
-
-    def download_video(self):
-        for video in self.video_list:
-            video_url = video['video_url']
-            video_name = video['title']
-            response = requests.get(video_url, headers=self.headers)
-            with open(video_name + '.mp4', 'wb') as f:
-                f.write(response.content)
-            time.sleep(1)
-
 if __name__ == '__main__':
-    crawler = Crawler()
-    crawler.get_video_list('python')
-    crawler.save_video_info()
-    crawler.download_video()
+    id = ''
+    keyword = ''
+    get_video_info(id)
+    print(f"关键词 {keyword} 的搜索结果为：{search_video(keyword)}")
