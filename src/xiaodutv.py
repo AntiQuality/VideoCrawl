@@ -9,7 +9,7 @@ from urllib.parse import unquote
 WEBSITE_NAME        = "xiaodutv"
 VIDEO_URL_PREFIX    = "https://v.xiaodutv.com/watch/{}.html"
 SEARCH_URL_PREFIX   = ""
-SEARCH_API_URL      = ""
+SEARCH_API_URL      = "https://haokan.baidu.com/haokan/ui-search/pc/search/video?pn=2&rn=10&type=video&query={}"
 SEARCH_NUM          = 10
 
 # 根据视频id得到视频url
@@ -134,6 +134,25 @@ def search_video(keyword):
     # 输入：搜索词 string
     # 输出：视频URL列表 list
     video_list = []
+    num = 0
+
+    url = SEARCH_API_URL.format(keyword)
+    headers = {
+        'Cookie' : 'BIDUPSID=6C55B21F18FD3CA95485849E19819C52; PSTM=1630408173; BAIDUID=48ED36D030AA444E9EE072ECA5A15094:FG=1; ZFY=RiTnTerinrCE4TxRPjQ3:BvqTtgvNSOhGKTDac7LtHQc:C; BAIDUID_BFESS=48ED36D030AA444E9EE072ECA5A15094:FG=1; hkpcvideolandquery=%u4E4C%u514B%u5170%u5AB3%u5987%u521A%u6765%u4E2D%u56FD%u7684%u65F6%u5019%uFF0C%u5C31%u53D1%u73B0%u8089%u5305%u5B50%u662F%u751C%u7684%uFF0C%u76F4%u547C%u6765%u5BF9%u5730%u65B9%u5566; Hm_lvt_4aadd610dfd2f5972f1efee2653a2bc5=1713154059,1713319126; PC_TAB_LOG=video_details_page; COMMON_LID=c2d8694493d769a08b781aa9c12f8703; BDRCVFR[fb3VbsUruOn]=mXraG7BTlj6XA-9UvwdIZm8mvqV; H_PS_PSSID=40301_40368_40377_40416_40511_60045_60048_40080; delPer=0; PSINO=2; BA_HECTOR=0g01ak8l0l84a425a00101a1a4jhjk1j1v4nu1s; BDORZ=B490B5EBF6F3CD402E515D22BCDA1598; hkpcSearch=%u4E2D%u4E1C; Hm_lpvt_4aadd610dfd2f5972f1efee2653a2bc5=1713355678; ariaDefaultTheme=undefined; RT="z=1&dm=baidu.com&si=e6222c9e-e4b0-422e-a2bc-0cfb4b8da247&ss=lv3raudj&sl=9&tt=ekn&bcn=https%3A%2F%2Ffclog.baidu.com%2Flog%2Fweirwood%3Ftype%3Dperf&ld=g5v8'
+    }
+    param = {
+        'sign' : 'bb78c93f7ed6d9e54138326682823eac',
+        'timestamp' : '1713355699714',
+        'version' : '1'
+    }
+    response = requests.get(url, headers=headers, params=param)
+    data = json.loads(response.content.decode('utf-8'))
+    for num, item in enumerate(data['data']['list']):
+        # print(f"{num+1}. {item['vid']}")
+        video_list.append(item['vid'])
+        if num==SEARCH_NUM-1:
+           break
+    
     for id in video_list:
         get_video_info(id, '关键词')
     return video_list

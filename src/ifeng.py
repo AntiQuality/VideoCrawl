@@ -158,4 +158,4 @@ if __name__ == '__main__':
     id = '8YplFg0vM9f'
     keyword = '中东'
     get_video_info(id, 'ID')
-    print(f"关键词 {keyword} 的搜索结果为：{search_video(keyword)}")
+    # print(f"关键词 {keyword} 的搜索结果为：{search_video(keyword)}")
