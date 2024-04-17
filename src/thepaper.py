@@ -7,6 +7,7 @@ import time
 
 WEBSITE_NAME        = "thepaper"
 VIDEO_URL_PREFIX    = "https://www.thepaper.cn/newsDetail_forward_{}"
+VIDEO_LIKE_URL      = "https://api.thepaper.cn/contentapi/article/detail/interaction/state?contId={}"
 SEARCH_URL_PREFIX   = "https://www.thepaper.cn/searchResult?id={}"
 SEARCH_API_URL      = "https://api.thepaper.cn/search/web/news"
 SEARCH_NUM          = 2
@@ -67,7 +68,6 @@ def get_video_title(id):
 def get_video_intro(id):
     # 输入：视频 ID string
     # 输出：视频简介 string
-    
     url = get_url(id)
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -82,16 +82,10 @@ def get_video_intro(id):
 def get_video_play(id):
     # 输入：视频 ID string
     # 输出：视频播放量和点赞量 string
-    url = get_url(id)
+    url = VIDEO_LIKE_URL.format(id)
     response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    value_div = soup.find('div', class_='praiseNum index_num__lvDnF')        # 取决于网站结构
-    if value_div:
-        value = value_div.text               # 也可能没有h1
-        value = value.replace('\n','').replace('\r','').replace('\t','')
-        return f"{value} 点赞数"
-    else:
-        return "未找到播放量"
+    data = json.loads(response.content.decode('utf-8'))
+    return f"{data['data']['praiseTimes']} 点赞"
 
 # 获取视频频道
 def get_video_channel(id):
