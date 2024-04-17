@@ -84,10 +84,10 @@ def get_video_title(id):
     url = get_url(id)
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
-    title_div = soup.find('', class_='')        # 取决于网站结构
-    if title_div:
-        title = title_div.h1.text               # 也可能没有h1
-        return title
+    value_div = soup.find('', class_='')        # 取决于网站结构
+    if value_div:
+        value = value_div.h1.text               # 也可能没有h1
+        return value
     else:
         return "未找到标题"
 
@@ -116,21 +116,42 @@ def download_video(id):
     pass
 
 # 收集视频基本信息
-def get_video_info(id):
-    print(f"视频标题是：{get_video_title(id)}")
-    print(get_video_intro(id))
-    print(get_video_play(id))
-    print(get_video_channel(id))
-    print(f"视频存储路径：{download_video(id)}")
+def get_video_info(id, title='ID'):
+    title = f'-----根据 {title} 获取视频信息-----'
+    video_title = get_video_title(id)
+    video_intro = get_video_intro(id)
+    video_play  = get_video_play(id)
+    video_chan  = get_video_channel(id)
+    video_path  = download_video(id)
+    print(title)
+    print(f"视频标题是：{video_title}")
+    print(video_intro)
+    print(video_play)
+    print(video_chan)
+    print(f"视频存储路径：{video_path}")
+    if not os.path.exists("logs/" + WEBSITE_NAME):
+        os.makedirs("logs/" + WEBSITE_NAME)
+    file_path = "logs/" + WEBSITE_NAME + "/" + video_title + '.txt'
+    with open(file_path, mode='w') as f:
+        f.write(title+'\n')
+        f.write(f"ID：{id}\n")
+        f.write(f'标题：{video_title}\n')
+        f.write(f'简介：{video_intro}\n')
+        f.write(f'点赞/播放量：{video_play}\n')
+        f.write(f'频道：{video_chan}\n')
+        print(f'{WEBSITE_NAME}视频日志存储：{file_path}')
 
 # 搜索视频
 def search_video(keyword):
     # 输入：搜索词 string
     # 输出：视频URL列表 list
-    pass
+    video_list = []
+    for id in video_list:
+        get_video_info(id, '关键词')
+    return video_list
 
 if __name__ == '__main__':
     id = ''
     keyword = ''
-    get_video_info(id)
+    get_video_info(id, 'ID')
     print(f"关键词 {keyword} 的搜索结果为：{search_video(keyword)}")

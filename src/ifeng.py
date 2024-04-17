@@ -79,7 +79,7 @@ def get_video_play(id):
     value_div = soup.find('span', class_='index_playNum_Tn7xu')
     if value_div:
         value = value_div.text
-        return f"播放量：{value}"
+        return value
     else:
         return "未找到播放量"
 
@@ -109,12 +109,14 @@ def format_response(response):
     return parsed_data
 
 # 收集视频基本信息
-def get_video_info(id):
+def get_video_info(id, title='ID'):
+    title = f'-----根据 {title} 获取视频信息-----'
     video_title = get_video_title(id)
     video_intro = get_video_intro(id)
     video_play  = get_video_play(id)
     video_chan  = get_video_channel(id)
     video_path  = download_video(id)
+    print(title)
     print(f"视频标题是：{video_title}")
     print(video_intro)
     print(video_play)
@@ -124,11 +126,12 @@ def get_video_info(id):
         os.makedirs("logs/" + WEBSITE_NAME)
     file_path = "logs/" + WEBSITE_NAME + "/" + video_title + '.txt'
     with open(file_path, mode='w') as f:
-        f.write(f"{id}\n")
-        f.write(video_title+'\n')
-        f.write(video_intro+'\n')
-        f.write(video_play+'\n')
-        f.write(video_chan+'\n')
+        f.write(title+'\n')
+        f.write(f"ID：{id}\n")
+        f.write(f'标题：{video_title}\n')
+        f.write(f'简介：{video_intro}\n')
+        f.write(f'点赞/播放量：{video_play}\n')
+        f.write(f'频道：{video_chan}\n')
         print(f'{WEBSITE_NAME}视频日志存储：{file_path}')
 
 # 搜索视频
@@ -146,11 +149,13 @@ def search_video(keyword):
        video_list.append(item['id'])
        if num==SEARCH_NUM-1:
            break
+    for id in video_list:
+        get_video_info(id, '关键词')
     return video_list
 
 if __name__ == '__main__':
     id = '7rl3FjbqxFY'
     id = '8YplFg0vM9f'
     keyword = '中东'
-    get_video_info(id)
+    get_video_info(id, 'ID')
     print(f"关键词 {keyword} 的搜索结果为：{search_video(keyword)}")
