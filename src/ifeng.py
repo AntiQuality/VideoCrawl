@@ -79,7 +79,7 @@ def get_video_play(id):
     value_div = soup.find('span', class_='index_playNum_Tn7xu')
     if value_div:
         value = value_div.text
-        return value
+        return f"{value} 播放量"
     else:
         return "未找到播放量"
 
