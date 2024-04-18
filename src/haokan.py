@@ -16,7 +16,7 @@ def get_url(id):
     return VIDEO_URL_PREFIX.format(id)
 
 # 获取视频文件
-def download_video_by_url(url, filename=None):
+def download_video_by_url(url, filename=None, WEBSITE_NAME=WEBSITE_NAME):
     # 输入：视频 URL string；视频文件名 string（可选）
     # 输出：视频文件存储路径 string
 
@@ -99,7 +99,7 @@ def get_video_channel(id):
     return f"{WEBSITE_NAME} 没有频道"
 
 # 根据当前视频网站决定下载方式
-def download_video(id):
+def download_video(id, WEBSITE_NAME=WEBSITE_NAME):
     # 输入：视频 URL string
     # 输出：视频文件文件存储路径 string
     filename = get_video_title(id) + ".mp4"
@@ -114,16 +114,16 @@ def download_video(id):
     # print(data['data']['apiData']['curVideoMeta']['playurl'])
     video_url = data['data']['apiData']['curVideoMeta']['playurl']
     print(f"视频URL：{video_url}")
-    return download_video_by_url(video_url, filename)
+    return download_video_by_url(video_url, filename, WEBSITE_NAME=WEBSITE_NAME)
 
 # 收集视频基本信息
-def get_video_info(id, title='ID'):
+def get_video_info(id, title='ID', WEBSITE_NAME=WEBSITE_NAME):
     title = f'-----根据 {title} 获取视频信息-----'
     video_title = get_video_title(id)
     video_intro = get_video_intro(id)
     video_play  = get_video_play(id)
     video_chan  = get_video_channel(id)
-    video_path  = download_video(id)
+    video_path  = download_video(id, WEBSITE_NAME=WEBSITE_NAME)
     print(title)
     print(f"视频标题是：{video_title}")
     print(video_intro)

@@ -6,9 +6,10 @@ import os
 import time
 
 WEBSITE_NAME        = "cntv"
-VIDEO_URL_PREFIX    = "https://v.cctv.com/{}.shtml"
-SEARCH_URL_PREFIX   = ""
-SEARCH_API_URL      = ""
+VIDEO_URL_PREFIX    = "https://tv.cctv.com/{}.shtml"
+VIDEO_LIKE_URL      = "https://api.itv.cntv.cn/praise/add?type=other&id={}&num=1&jsonp_callback=cb&jsonp_callback=dianzan"
+SEARCH_URL_PREFIX   = "https://search.cctv.com/search.php?qtext={}&type=video"
+SEARCH_API_URL      = "https://search.cctv.com/ifsearch.php?page=1&qtext={}&sort=relevance"
 SEARCH_NUM          = 10
 
 # 根据视频id得到视频url
@@ -54,6 +55,7 @@ def get_video_title(id):
     # 输入：视频 ID string
     # 输出：视频标题 string
     url = get_url(id)
+    print('\t',id)
     response = requests.get(url)
     soup = BeautifulSoup(response.content.decode('utf-8'), 'html.parser')
     value_div = soup.find('div', class_='tit')        # 取决于网站结构
@@ -68,15 +70,39 @@ def get_video_intro(id):
     # 输入：视频 ID string
     # 输出：视频简介 string
     url = VIDEO_URL_PREFIX.format(id)
+
+    # # v.cctv.com
+    # print(url)
+    # response = requests.get(url)
+    # intro_tag = re.search(r"var videobrief=\"([^\"]*)\"", response.content.decode('utf-8'))
+    # return intro_tag.group(1)
+
+    # tv.cctv.com
     response = requests.get(url)
-    intro_tag = re.search(r"var videobrief=\"([^\"]*)\"", response.content.decode('utf-8'))
-    return intro_tag.group(1)
+    soup = BeautifulSoup(response.content.decode('utf-8'), 'html.parser')
+    value_div = soup.find('div', class_='video_brief')        # 取决于网站结构
+    if value_div:
+        value = value_div.text               # 也可能没有h1
+        return value
+    else:
+        return "未找到简介"
+
+# 将requests返回对象格式化为json数据
+def format_response(response):
+    data_str = response.content.decode('utf-8')
+    json_str = data_str[data_str.find('{'):data_str.rfind('}')+1]
+    parsed_data = json.loads(json_str)
+    return parsed_data
 
 # 获取视频播放量
 def get_video_play(id):
     # 输入：视频 ID string
     # 输出：视频播放量和点赞量 string
-    pass
+    id = id.split('/')[-1]
+    url = VIDEO_LIKE_URL.format(id)
+    response = requests.get(url)
+    data = format_response(response)
+    return f"{data['data']['num']} 点赞"
 
 # 获取视频频道
 def get_video_channel(id):
@@ -120,13 +146,31 @@ def get_video_info(id, title='ID'):
 def search_video(keyword):
     # 输入：搜索词 string
     # 输出：视频URL列表 list
+    url = SEARCH_API_URL.format(keyword)
+    title_set = set()
     video_list = []
+    num = 0
+
+    response = requests.get(url)
+    str = response.content.decode('utf-8')
+    data = json.loads(str)
+    for item in data['list']:
+        if item['all_title'] in title_set:
+            continue
+        title_set.add(item['all_title'])
+        value = re.search(r".com/([^\"]*).shtml", item['urllink'])
+        video_list.append(value.group(1))
+        num += 1
+        if num==SEARCH_NUM:
+            break
+
     for id in video_list:
         get_video_info(id, '关键词')
     return video_list
 
 if __name__ == '__main__':
-    id = '2024/04/17/VIDEvHc3qIZvsOiCk7qtxpAl240417'
+    # id = '2024/04/17/VIDEvHc3qIZvsOiCk7qtxpAl240417'
+    id = '2024/04/18/VIDE5n5Lbl1QoCD2K922xnS8240418'
     keyword = '中东'
     get_video_info(id, 'ID')
     print(f"关键词 {keyword} 的搜索结果为：{search_video(keyword)}")

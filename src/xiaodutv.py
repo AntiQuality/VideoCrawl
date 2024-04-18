@@ -10,7 +10,7 @@ WEBSITE_NAME        = "xiaodutv"
 VIDEO_URL_PREFIX    = "https://v.xiaodutv.com/watch/{}.html"
 SEARCH_URL_PREFIX   = ""
 SEARCH_API_URL      = "https://haokan.baidu.com/haokan/ui-search/pc/search/video?pn=2&rn=10&type=video&query={}"
-SEARCH_NUM          = 10
+SEARCH_NUM          = 2
 
 # 根据视频id得到视频url
 def get_url(id):
@@ -153,12 +153,15 @@ def search_video(keyword):
         if num==SEARCH_NUM-1:
            break
     
+    print(video_list)
+    from haokan import get_video_info as get_video_info_haokan
+    
     for id in video_list:
-        get_video_info(id, '关键词')
+        get_video_info_haokan(id, '关键词', WEBSITE_NAME='xiaodutv')
     return video_list
 
 if __name__ == '__main__':
     id = '05346747067631501098'
-    keyword = ''
-    get_video_info(id)
+    keyword = '中东'
+    # get_video_info(id)
     print(f"关键词 {keyword} 的搜索结果为：{search_video(keyword)}")
