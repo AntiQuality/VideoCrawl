@@ -7,9 +7,10 @@ import time
 
 WEBSITE_NAME        = "ifeng"
 VIDEO_URL_PREFIX    = "https://v.ifeng.com/c/{}"
+VIDEO_LIKE_URL      = "https://survey.news.ifeng.com/api/getaccumulatorweight?key={}ding&format=js&serviceid=1"
 SEARCH_URL_PREFIX   = "https://so.ifeng.com/?q={}"
 SEARCH_API_URL      = "https://shankapi.ifeng.com/api/getSoFengData/video/{}/1/getSoFengDataCallback?callback=getSoFengDataCallback"
-SEARCH_NUM          = 2
+SEARCH_NUM          = 3
 
 # 根据视频id得到视频url
 def get_url(id):
@@ -69,19 +70,25 @@ def get_video_intro(id):
     # 输出：视频简介 string
     return f"{WEBSITE_NAME} 没有简介"
 
+# 将requests返回对象格式化为json数据
+def format_response(response):
+    data_str = response.content.decode('utf-8')
+    json_str = data_str[data_str.find('{'):data_str.rfind('}')+1]
+    parsed_data = json.loads(json_str)
+    return parsed_data
+
 # 获取视频播放量
 def get_video_play(id):
     # 输入：视频 ID string
     # 输出：视频播放量和点赞量 string
     url = get_url(id)
     response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    value_div = soup.find('span', class_='index_playNum_Tn7xu')
-    if value_div:
-        value = value_div.text
-        return f"{value} 播放量"
-    else:
-        return "未找到播放量"
+    guid = re.search(r'"docData":\s*\{[^}]*"vid":\s*"([^"]+)"', response.text).group(1)
+    url = VIDEO_LIKE_URL.format(guid)
+    response = requests.get(url)
+    data = format_response(response)
+    new_guid = f"{guid}ding"
+    return f"{data['data']['browse'][new_guid]} 点赞"
 
 # 获取视频频道
 def get_video_channel(id):
@@ -96,17 +103,10 @@ def download_video(id):
     filename = get_video_title(id) + ".mp4"
     url = get_url(id)
     response = requests.get(url)
-    video_urls = re.search(r"videoPlayUrl\":\"([^\"]*).mp4\"", response.text)
+    video_urls = re.search(r"img_video\" content=\"([^\"]*).mp4\"", response.text)
     video_url = video_urls.group(1)+".mp4"
     print(f"视频URL：{video_url}")
     return download_video_by_url(video_url, filename)
-
-# 将requests返回对象格式化为json数据
-def format_response(response):
-    data_str = response.content.decode('utf-8')
-    json_str = data_str[data_str.find('{'):data_str.rfind('}')+1]
-    parsed_data = json.loads(json_str)
-    return parsed_data
 
 # 收集视频基本信息
 def get_video_info(id, title='ID'):
@@ -133,6 +133,9 @@ def get_video_info(id, title='ID'):
         f.write(f'点赞/播放量：{video_play}\n')
         f.write(f'频道：{video_chan}\n')
         print(f'{WEBSITE_NAME}视频日志存储：{file_path}')
+    file_path = "logs/" + WEBSITE_NAME + "/" + WEBSITE_NAME + ".txt"
+    with open(file_path, mode='a') as f:
+        f.write(f"{id},{video_title},{video_intro},{video_play},{video_chan}\n")
 
 # 搜索视频
 def search_video(keyword):
@@ -158,4 +161,4 @@ if __name__ == '__main__':
     id = '8YplFg0vM9f'
     keyword = '中东'
     get_video_info(id, 'ID')
-    # print(f"关键词 {keyword} 的搜索结果为：{search_video(keyword)}")
+    print(f"关键词 {keyword} 的搜索结果为：{search_video(keyword)}")

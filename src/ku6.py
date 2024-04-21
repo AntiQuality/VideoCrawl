@@ -9,7 +9,7 @@ WEBSITE_NAME        = "ku6"
 VIDEO_URL_PREFIX    = "https://www.ku6.com/video/detail?id={}"
 SEARCH_URL_PREFIX   = ""
 SEARCH_API_URL      = ""
-SEARCH_NUM          = 2
+SEARCH_NUM          = 10
 
 # 根据视频id得到视频url
 def get_url(id):
@@ -117,6 +117,9 @@ def get_video_info(id, title='ID'):
         f.write(f'点赞/播放量：{video_play}\n')
         f.write(f'频道：{video_chan}\n')
         print(f'{WEBSITE_NAME}视频日志存储：{file_path}')
+    file_path = "logs/" + WEBSITE_NAME + "/" + WEBSITE_NAME + ".txt"
+    with open(file_path, mode='a') as f:
+        f.write(f"{id},{video_title},{video_intro},{video_play},{video_chan}\n")
 
 # 搜索视频
 def search_video(keyword):

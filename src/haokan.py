@@ -9,7 +9,7 @@ WEBSITE_NAME        = "haokan"
 VIDEO_URL_PREFIX    = "https://haokan.baidu.com/v?vid={}"
 SEARCH_URL_PREFIX   = "https://haokan.baidu.com/web/search/page?query={}"
 SEARCH_API_URL      = "https://haokan.baidu.com/haokan/ui-search/pc/search/video?pn=2&rn=10&type=video&query={}"
-SEARCH_NUM          = 1
+SEARCH_NUM          = 10
 
 # 根据视频id得到视频url
 def get_url(id):
@@ -141,6 +141,9 @@ def get_video_info(id, title='ID', WEBSITE_NAME=WEBSITE_NAME):
         f.write(f'点赞/播放量：{video_play}\n')
         f.write(f'频道：{video_chan}\n')
         print(f'{WEBSITE_NAME}视频日志存储：{file_path}')
+    file_path = "logs/" + WEBSITE_NAME + "/" + WEBSITE_NAME + ".txt"
+    with open(file_path, mode='a') as f:
+        f.write(f"{id},{video_title},{video_intro},{video_play},{video_chan}\n")
 
 # 搜索视频
 def search_video(keyword):
@@ -151,21 +154,21 @@ def search_video(keyword):
 
     url = SEARCH_API_URL.format(keyword)
     headers = {
-        'Cookie' : 'BIDUPSID=6C55B21F18FD3CA95485849E19819C52; PSTM=1630408173; BAIDUID=48ED36D030AA444E9EE072ECA5A15094:FG=1; ZFY=RiTnTerinrCE4TxRPjQ3:BvqTtgvNSOhGKTDac7LtHQc:C; BAIDUID_BFESS=48ED36D030AA444E9EE072ECA5A15094:FG=1; hkpcvideolandquery=%u4E4C%u514B%u5170%u5AB3%u5987%u521A%u6765%u4E2D%u56FD%u7684%u65F6%u5019%uFF0C%u5C31%u53D1%u73B0%u8089%u5305%u5B50%u662F%u751C%u7684%uFF0C%u76F4%u547C%u6765%u5BF9%u5730%u65B9%u5566; Hm_lvt_4aadd610dfd2f5972f1efee2653a2bc5=1713154059,1713319126; PC_TAB_LOG=video_details_page; COMMON_LID=c2d8694493d769a08b781aa9c12f8703; BDRCVFR[fb3VbsUruOn]=mXraG7BTlj6XA-9UvwdIZm8mvqV; H_PS_PSSID=40301_40368_40377_40416_40511_60045_60048_40080; delPer=0; PSINO=2; BA_HECTOR=0g01ak8l0l84a425a00101a1a4jhjk1j1v4nu1s; BDORZ=B490B5EBF6F3CD402E515D22BCDA1598; hkpcSearch=%u4E2D%u4E1C; Hm_lpvt_4aadd610dfd2f5972f1efee2653a2bc5=1713355678; ariaDefaultTheme=undefined; RT="z=1&dm=baidu.com&si=e6222c9e-e4b0-422e-a2bc-0cfb4b8da247&ss=lv3raudj&sl=9&tt=ekn&bcn=https%3A%2F%2Ffclog.baidu.com%2Flog%2Fweirwood%3Ftype%3Dperf&ld=g5v8'
+        'Cookie' : 'BIDUPSID=6C55B21F18FD3CA95485849E19819C52; PSTM=1630408173; BAIDUID=48ED36D030AA444E9EE072ECA5A15094:FG=1; ZFY=RiTnTerinrCE4TxRPjQ3:BvqTtgvNSOhGKTDac7LtHQc:C; BAIDUID_BFESS=48ED36D030AA444E9EE072ECA5A15094:FG=1; hkpcSearch=%u4E2D%u4E1C; hkpcvideolandquery=%u97E9%u56FD%u6258%u5927%u54E5%u53D1%u536B%u661F%u5374%u901A%u4FE1%u5931%u8D25%uFF0C%u671D%u9C9C%u81EA%u5DF1%u53D1%u5374%u6210%u529F%u4E86; H_PS_PSSID=40301_40368_40377_40416_40511_40080_60140; BA_HECTOR=a08401a52h0k0ga42585al2gbkc2631j29hlq1s; BDORZ=B490B5EBF6F3CD402E515D22BCDA1598; delPer=0; PSINO=2; Hm_lvt_4aadd610dfd2f5972f1efee2653a2bc5=1713154059,1713319126,1713714907; Hm_lpvt_4aadd610dfd2f5972f1efee2653a2bc5=1713714944; ariaDefaultTheme=undefined; RT="z=1&dm=baidu.com&si=e6222c9e-e4b0-422e-a2bc-0cfb4b8da247&ss=lv9plwqb&sl=3&tt=2hi&bcn=https%3A%2F%2Ffclog.baidu.com%2Flog%2Fweirwood%3Ftype%3Dperf&ld=tki'
     }
     param = {
-        'sign' : 'bb78c93f7ed6d9e54138326682823eac',
-        'timestamp' : '1713355699714',
+        'sign' : '65ec51daa340aa542c86ea5159940174',
+        'timestamp' : '1713715003591',
         'version' : '1'
     }
     response = requests.get(url, headers=headers, params=param)
     data = json.loads(response.content.decode('utf-8'))
+    print(data)
     for num, item in enumerate(data['data']['list']):
         # print(f"{num+1}. {item['vid']}")
         video_list.append(item['vid'])
         if num==SEARCH_NUM-1:
            break
-    
     for id in video_list:
         get_video_info(id, '关键词')
     return video_list
