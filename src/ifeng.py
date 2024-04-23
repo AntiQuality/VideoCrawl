@@ -10,7 +10,7 @@ VIDEO_URL_PREFIX    = "https://v.ifeng.com/c/{}"
 VIDEO_LIKE_URL      = "https://survey.news.ifeng.com/api/getaccumulatorweight?key={}ding&format=js&serviceid=1"
 SEARCH_URL_PREFIX   = "https://so.ifeng.com/?q={}"
 SEARCH_API_URL      = "https://shankapi.ifeng.com/api/getSoFengData/video/{}/1/getSoFengDataCallback?callback=getSoFengDataCallback"
-SEARCH_NUM          = 3
+SEARCH_NUM          = 10
 
 # 根据视频id得到视频url
 def get_url(id):
@@ -133,7 +133,7 @@ def get_video_info(id, title='ID'):
         f.write(f'点赞/播放量：{video_play}\n')
         f.write(f'频道：{video_chan}\n')
         print(f'{WEBSITE_NAME}视频日志存储：{file_path}')
-    file_path = "logs/" + WEBSITE_NAME + "/" + WEBSITE_NAME + ".txt"
+    file_path = "logs/" + WEBSITE_NAME + "/" + WEBSITE_NAME + ".csv"
     with open(file_path, mode='a') as f:
         f.write(f"{id},{video_title},{video_intro},{video_play},{video_chan}\n")
 

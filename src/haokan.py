@@ -142,7 +142,7 @@ def get_video_info(id, title='ID', WEBSITE_NAME=WEBSITE_NAME):
         f.write(f'点赞/播放量：{video_play}\n')
         f.write(f'频道：{video_chan}\n')
         print(f'{WEBSITE_NAME}视频日志存储：{file_path}')
-    file_path = "logs/" + WEBSITE_NAME + "/" + WEBSITE_NAME + ".txt"
+    file_path = "logs/" + WEBSITE_NAME + "/" + WEBSITE_NAME + ".csv"
     with open(file_path, mode='a') as f:
         f.write(f"{id},{video_title},{video_intro},{video_play},{video_chan}\n")
 
