@@ -10,7 +10,7 @@
 
 根据实验要求，本项目共支持七个视频网站
 
-1. 	v.ifeng.com 凤凰网，视频在[https://v.ifeng.com](https://v.ifeng.com)
+1. v.ifeng.com 凤凰网，视频在[https://v.ifeng.com](https://v.ifeng.com)
 2. v.xiaodutv.com 百搜视频
 3. www.thepaper.cn 澎湃网，视频在[https://www.thepaper.cn/channel_26916](https://www.thepaper.cn/channel_26916)
 4. haokan.baidu.com 好看视频
