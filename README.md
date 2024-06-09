@@ -132,3 +132,5 @@ python /src/main.py
 就可以选择目标网站，通过输入ID或关键词来下载视频啦
 
 ![example](pics/example.png)
+
+*提示：*如果遇到无法下载的情况，大概率是cookies的问题，请尝试向`/src/[对应网站].py`的headers字段添加自己的cookies。

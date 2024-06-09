@@ -33,7 +33,6 @@ def download_video_by_url(url, filename=None):
         headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
             'referer': 'https://search.bilibili.com',
-            'cookie': "buvid3=B12CDDF8-61AF-CD33-AFA9-C8C87FFCDC6519552infoc; LIVE_BUVID=AUTO7416572088582154; b_nut=100; CURRENT_FNVAL=4048; _uuid=846B1010DA-2C7A-4B810-10E7C-2FA6428CB81644606infoc; buvid4=33053282-471D-C646-6601-4FBC2CA69DD344997-024041510-Bi6Bn36okmRAw1fyEWgr%2BQ%3D%3D; PVID=2; b_lsid=51AB7810F_18EF0478AF4; enable_web_push=DISABLE; FEED_LIVE_VERSION=V_DYN_LIVING_UP; header_theme_version=CLOSE; home_feed_column=5; browser_resolution=1440-754; fingerprint=12c3f0b2883d5a0264ce2fba0ec48c40; buvid_fp_plain=undefined; rpdid=|(u)~lJJ|)k|0J'u~uJRk)kJl; buvid_fp=12c3f0b2883d5a0264ce2fba0ec48c40; SESSDATA=d67ee9a1%2C1728980519%2Cdd3bf%2A42CjAlrHUY4Ev6f3ksbdy92P0J47hiS584FLusYYIDEJ3caCVtmILYaqWTtoxFMqBbVmYSVlVSVlg1WmhNVHR6S1dnT3diLTMtQTVwdjEyWXRWM1FFMjFsRHQ0MVZNMW90YWNySkExc3NPdTloSFJrcFF4MmZDR2EyNGhwQ3lqTHVwUFhjWlRMZXlnIIEC; bili_jct=60c950400ebcdbd0f0b324ae4cb938eb; DedeUserID=524357591; DedeUserID__ckMd5=8981afce12622feb; sid=6rtpy9er; bili_ticket=eyJhbGciOiJIUzI1NiIsImtpZCI6InMwMyIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTM2ODgyMjAsImlhdCI6MTcxMzQyODk2MCwicGx0IjotMX0.7CkVk8SSUXADoxHMkGnvbxLYDr0kg-Koz5w1pYb7nZ8; bili_ticket_expires=1713688160"
         }
         video_content = requests.get(url=url, headers=headers).content
         f.write(video_content)
@@ -124,7 +123,6 @@ def download_video(id):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
         'referer': 'https://search.bilibili.com',
-        'cookie': "buvid3=B12CDDF8-61AF-CD33-AFA9-C8C87FFCDC6519552infoc; LIVE_BUVID=AUTO7416572088582154; b_nut=100; CURRENT_FNVAL=4048; _uuid=846B1010DA-2C7A-4B810-10E7C-2FA6428CB81644606infoc; buvid4=33053282-471D-C646-6601-4FBC2CA69DD344997-024041510-Bi6Bn36okmRAw1fyEWgr%2BQ%3D%3D; PVID=2; b_lsid=51AB7810F_18EF0478AF4; enable_web_push=DISABLE; FEED_LIVE_VERSION=V_DYN_LIVING_UP; header_theme_version=CLOSE; home_feed_column=5; browser_resolution=1440-754; fingerprint=12c3f0b2883d5a0264ce2fba0ec48c40; buvid_fp_plain=undefined; rpdid=|(u)~lJJ|)k|0J'u~uJRk)kJl; buvid_fp=12c3f0b2883d5a0264ce2fba0ec48c40; SESSDATA=d67ee9a1%2C1728980519%2Cdd3bf%2A42CjAlrHUY4Ev6f3ksbdy92P0J47hiS584FLusYYIDEJ3caCVtmILYaqWTtoxFMqBbVmYSVlVSVlg1WmhNVHR6S1dnT3diLTMtQTVwdjEyWXRWM1FFMjFsRHQ0MVZNMW90YWNySkExc3NPdTloSFJrcFF4MmZDR2EyNGhwQ3lqTHVwUFhjWlRMZXlnIIEC; bili_jct=60c950400ebcdbd0f0b324ae4cb938eb; DedeUserID=524357591; DedeUserID__ckMd5=8981afce12622feb; sid=6rtpy9er; bili_ticket=eyJhbGciOiJIUzI1NiIsImtpZCI6InMwMyIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTM2ODgyMjAsImlhdCI6MTcxMzQyODk2MCwicGx0IjotMX0.7CkVk8SSUXADoxHMkGnvbxLYDr0kg-Koz5w1pYb7nZ8; bili_ticket_expires=1713688160"
     }
 
     response = requests.get(url, headers=headers)
@@ -179,7 +177,6 @@ def search_video(keyword):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
         'referer': 'https://search.bilibili.com/video?keyword=%E4%B8%AD%E4%B8%9C',
-        'cookie': "buvid3=B12CDDF8-61AF-CD33-AFA9-C8C87FFCDC6519552infoc; LIVE_BUVID=AUTO7416572088582154; b_nut=100; CURRENT_FNVAL=4048; _uuid=846B1010DA-2C7A-4B810-10E7C-2FA6428CB81644606infoc; buvid4=33053282-471D-C646-6601-4FBC2CA69DD344997-024041510-Bi6Bn36okmRAw1fyEWgr%2BQ%3D%3D; PVID=2; b_lsid=51AB7810F_18EF0478AF4; enable_web_push=DISABLE; FEED_LIVE_VERSION=V_DYN_LIVING_UP; header_theme_version=CLOSE; home_feed_column=5; browser_resolution=1440-754; fingerprint=12c3f0b2883d5a0264ce2fba0ec48c40; buvid_fp_plain=undefined; rpdid=|(u)~lJJ|)k|0J'u~uJRk)kJl; buvid_fp=12c3f0b2883d5a0264ce2fba0ec48c40; SESSDATA=d67ee9a1%2C1728980519%2Cdd3bf%2A42CjAlrHUY4Ev6f3ksbdy92P0J47hiS584FLusYYIDEJ3caCVtmILYaqWTtoxFMqBbVmYSVlVSVlg1WmhNVHR6S1dnT3diLTMtQTVwdjEyWXRWM1FFMjFsRHQ0MVZNMW90YWNySkExc3NPdTloSFJrcFF4MmZDR2EyNGhwQ3lqTHVwUFhjWlRMZXlnIIEC; bili_jct=60c950400ebcdbd0f0b324ae4cb938eb; DedeUserID=524357591; DedeUserID__ckMd5=8981afce12622feb; sid=6rtpy9er; bili_ticket=eyJhbGciOiJIUzI1NiIsImtpZCI6InMwMyIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTM2ODgyMjAsImlhdCI6MTcxMzQyODk2MCwicGx0IjotMX0.7CkVk8SSUXADoxHMkGnvbxLYDr0kg-Koz5w1pYb7nZ8; bili_ticket_expires=1713688160"
     }
 
     response = requests.get(url, headers=headers)

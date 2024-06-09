@@ -156,7 +156,6 @@ def get_ts_list(url_chip):
     url = VIDEO_TS_URL.format(url_chip)
     headers = {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-        "Cookie": "brstaut=undefined; HMF_CI=7bedd0cf4f4f96fdb4b4683ed6878f6e531e69bc86e5d6cea423e3a9dd36d533617e481459c26a1aec611d2efb63cec8bd9af332a0db7691483a1709482e0f2fd7; HMY_JC=5d1a89cb578bcdb4b45c7eba82df3161339218b09ff548c2ea8c6e2798ed3a5c85,; HBB_HC=01c7c9c4bdcd2277d98e1b814b5a91d42eaf5f5c19c03e65fc917ede072f1b48fa46c0fb3e7b199a46e725b16c85e527c7",
         "referrer": "https://tv.cctv.com/"
     }
     response = requests.get(url, headers=headers)
