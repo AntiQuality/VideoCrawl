@@ -133,7 +133,7 @@ python /src/main.py
 
 ![example](pics/example.png)
 
-*提示：*如果遇到无法下载的情况，大概率是cookies的问题，请尝试向`/src/[对应网站].py`的headers字段添加自己的cookies。
+**提示**：如果无法正常下载视频，大概率是cookie的问题，请尝试向`/src/[对应网站].py`的headers字段添加自己在该网站的cookie。关于如何获取自己的cookie，请参考[【个人疑问】浏览器如何获取网页的COOKIE？](https://blog.csdn.net/qq_53170066/article/details/133888747)
 
 ## 致谢
 
