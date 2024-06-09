@@ -134,3 +134,7 @@ python /src/main.py
 ![example](pics/example.png)
 
 *提示：*如果遇到无法下载的情况，大概率是cookies的问题，请尝试向`/src/[对应网站].py`的headers字段添加自己的cookies。
+
+## 致谢
+
+感谢[@Paul Deng](https://github.com/pauldeng)修复本项目的依赖文件`requirements.txt`。Paul Deng在issues中提出的[下载CCTV央视视频的一些心得](https://github.com/AntiQuality/VideoCrawl/issues/2)，也推荐对央视视频下载感兴趣的朋友们一看！
